@@ -1,0 +1,20 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+
+# Standalone runner artifacts
+standalone-runner/node_modules/
+standalone-runner/.expo/
+standalone-runner/.env
+standalone-runner/dist/
+
+# Build artifacts
+dist/
+build/
+*.tsbuildinfo
+
+# System & IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

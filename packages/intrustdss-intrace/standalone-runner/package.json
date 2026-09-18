@@ -1,0 +1,32 @@
+{
+  "name": "intrace-standalone-runner",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "expo start",
+    "start:dev": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=dev\\nEXPO_PUBLIC_APP_ENV=dev\\n')\" && expo start",
+    "start:uat": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=uat\\nEXPO_PUBLIC_APP_ENV=uat\\n')\" && expo start",
+    "start:prod": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=prod\\nEXPO_PUBLIC_APP_ENV=prod\\n')\" && expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~4.0.1",
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/stack": "^6.4.1",
+    "expo": "^52.0.0",
+    "expo-camera": "~16.0.18",
+    "expo-status-bar": "~2.0.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.9",
+    "react-native-gesture-handler": "~2.20.2",
+    "react-native-safe-area-context": "4.12.0",
+    "react-native-screens": "~4.4.0",
+    "react-native-web": "~0.19.10"
+  },
+  "devDependencies": {
+    "@types/react": "~18.3.12",
+    "typescript": "~5.3.3"
+  }
+}

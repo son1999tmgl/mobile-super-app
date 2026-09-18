@@ -1,0 +1,47 @@
+# ==============================================================================
+# intrustDSS Super App Ecosystem - Root .gitignore
+# ==============================================================================
+
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Expo & Metro Bundler
+.expo/
+.expo-shared/
+dist/
+web-build/
+.metro-health-check*
+
+# Môi trường cục bộ & Khóa bí mật
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.keystore
+*.jks
+
+# Build artifacts cục bộ
+*.apk
+*.aab
+*.ipa
+*.zip
+*.tar.gz
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# EAS Update & EAS Build cache
+.eas/

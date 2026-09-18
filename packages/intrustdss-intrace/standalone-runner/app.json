@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "inTrace Standalone Runner",
+    "slug": "intrace-standalone-runner",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Cho phép inTrace truy cập Camera để quét mã vạch thùng và container."
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@intrustdss/ebhxh",
+  "version": "1.0.0",
+  "description": "Mini App Bảo hiểm xã hội điện tử eBHXH cho Super App intrustDSS",
+  "main": "src/index.ts",
+  "types": "index.d.ts",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.74.0",
+    "@react-navigation/native": "^6.0.0",
+    "@react-navigation/stack": "^6.0.0"
+  }
+}

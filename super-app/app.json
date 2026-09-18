@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "intrustDSS Super App",
+    "slug": "intrustdss-super-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0F172A"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "vn.intrustdss.superapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F172A"
+      },
+      "package": "vn.intrustdss.superapp",
+      "permissions": [
+        "CAMERA",
+        "CAMERA_FLASH"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Super App intrustDSS cần quyền Camera để quét mã vạch thùng, container và ký số tài liệu."
+        }
+      ],
+      "expo-asset",
+      "expo-secure-store"
+    ]
+  }
+}
