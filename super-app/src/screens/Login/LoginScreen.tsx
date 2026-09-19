@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AppButton, AppCard, AppTextInput } from '@intrustdss/ui';
 import { SuperAppEnvironmentConfig } from '../../config/types';
 import { UserInfo } from '../../types/auth';
-import { COLORS } from '../../constants/theme';
 import { useLogin } from './useLogin';
 import { styles } from './Login.styles';
 
@@ -23,6 +21,7 @@ interface LoginScreenProps {
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({ config, onLoginSuccess }) => {
   const insets = useSafeAreaInsets();
+  const [showPassword, setShowPassword] = useState(false);
   const {
     taxCode,
     setTaxCode,
@@ -46,62 +45,56 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ config, onLoginSuccess
           <Text style={styles.brandSub}>HỆ THỐNG TRUY XUẤT &amp; XÁC THỰC DOANH NGHIỆP</Text>
         </View>
 
-        {/* Card Form */}
-        <View style={styles.card}>
+        {/* Card Form dùng chung từ Design System */}
+        <AppCard variant="elevated" padding="lg">
           <Text style={styles.formTitle}>Đăng Nhập Tài Khoản</Text>
           <Text style={styles.formSubtitle}>Sử dụng tài khoản inTrace để truy cập toàn bộ hệ sinh thái</Text>
 
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mã số thuế / Mã đơn vị (*)</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="VD: 0101234567"
-              placeholderTextColor={COLORS.textSecondary}
-              value={taxCode}
-              onChangeText={setTaxCode}
-              autoCapitalize="none"
-              autoCorrect={false}
+          <AppTextInput
+            label="Mã số thuế / Mã đơn vị"
+            placeholder="VD: 0101234567"
+            value={taxCode}
+            onChangeText={setTaxCode}
+            autoCapitalize="none"
+            autoCorrect={false}
+            required
+            leftIcon={<Text style={{ fontSize: 16 }}>🏢</Text>}
+          />
+
+          <AppTextInput
+            label="Tên đăng nhập"
+            placeholder="Tên tài khoản hoặc email"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+            autoCorrect={false}
+            required
+            leftIcon={<Text style={{ fontSize: 16 }}>👤</Text>}
+          />
+
+          <AppTextInput
+            label="Mật khẩu"
+            placeholder="Nhập mật khẩu"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            required
+            leftIcon={<Text style={{ fontSize: 16 }}>🔒</Text>}
+            rightIcon={<Text style={{ fontSize: 16 }}>{showPassword ? '👁️' : '🙈'}</Text>}
+            onRightIconPress={() => setShowPassword((prev) => !prev)}
+          />
+
+          <View style={{ marginTop: 12 }}>
+            <AppButton
+              title="ĐĂNG NHẬP"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={loading}
+              onPress={handleLogin}
             />
           </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Tên đăng nhập (*)</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Tên tài khoản hoặc email"
-              placeholderTextColor={COLORS.textSecondary}
-              value={username}
-              onChangeText={setUsername}
-              autoCapitalize="none"
-              autoCorrect={false}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mật khẩu (*)</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Nhập mật khẩu"
-              placeholderTextColor={COLORS.textSecondary}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
-
-          <TouchableOpacity
-            style={[styles.loginBtn, loading && styles.loginBtnDisabled]}
-            onPress={handleLogin}
-            disabled={loading}
-            activeOpacity={0.8}
-          >
-            {loading ? (
-              <ActivityIndicator color={COLORS.textLight} />
-            ) : (
-              <Text style={styles.loginBtnText}>ĐĂNG NHẬP</Text>
-            )}
-          </TouchableOpacity>
-        </View>
+        </AppCard>
       </ScrollView>
     </KeyboardAvoidingView>
   );

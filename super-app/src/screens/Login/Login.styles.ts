@@ -52,39 +52,4 @@ export const styles = StyleSheet.create({
     marginBottom: SPACING.lg,
     lineHeight: 18,
   },
-  inputGroup: {
-    marginBottom: SPACING.lg - 4,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#334155',
-    marginBottom: 6,
-  },
-  input: {
-    backgroundColor: COLORS.lightBg,
-    borderWidth: 1.5,
-    borderColor: COLORS.border,
-    borderRadius: RADIUS.md,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: 12,
-    fontSize: 15,
-    color: COLORS.textPrimary,
-  },
-  loginBtn: {
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.md,
-    paddingVertical: SPACING.md,
-    alignItems: 'center',
-    marginTop: SPACING.sm + 2,
-  },
-  loginBtnDisabled: {
-    backgroundColor: COLORS.textMuted,
-  },
-  loginBtnText: {
-    color: COLORS.textLight,
-    fontSize: 15,
-    fontWeight: '800',
-    letterSpacing: 0.5,
-  },
 });

@@ -1,0 +1,18 @@
+{
+  "extends": "../../super-app/node_modules/expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": false,
+    "baseUrl": ".",
+    "typeRoots": [
+      "../../super-app/node_modules/@types"
+    ],
+    "paths": {
+      "*": ["../../super-app/node_modules/*"]
+    },
+    "skipLibCheck": true,
+    "declaration": true
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

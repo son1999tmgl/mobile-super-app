@@ -7,7 +7,21 @@
       "../../super-app/node_modules/@types"
     ],
     "paths": {
-      "*": ["../../super-app/node_modules/*"]
+      "@intrustdss/ui": [
+        "../intrustdss-ui/src/index.ts"
+      ],
+      "react": [
+        "../../super-app/node_modules/@types/react"
+      ],
+      "react/jsx-runtime": [
+        "../../super-app/node_modules/@types/react/jsx-runtime"
+      ],
+      "react-native": [
+        "../../super-app/node_modules/react-native"
+      ],
+      "*": [
+        "../../super-app/node_modules/*"
+      ]
     },
     "skipLibCheck": true
   },

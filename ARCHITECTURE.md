@@ -184,7 +184,16 @@ Mỗi dự án (`super-app` và từng mini-app trong `packages/`) sở hữu b�
 - `.eslintrc.js`: Bộ quy tắc kiểm tra cú pháp và chất lượng mã nguồn riêng cho từng team.
 - `.prettierrc`: Định dạng code thống nhất (tab, dấu nháy, độ rộng dòng).
 
+### 6.3. Chuẩn Hóa Giao Diện Đa Đội Ngũ (Shared Design System - `@intrustdss/ui`):
+Để đảm bảo trải nghiệm người dùng nhất quán 100% khi bàn giao các Mini App (`inTrace`, `eContract`, `eBHXH`, `inFarm`) cho các nhóm phát triển khác nhau:
+- Toàn bộ các thành phần giao diện cơ bản (`Button`, `Card`, `TextInput`, `StatusBadge`) và hệ thống Design Tokens (`colors`, `spacing`, `radius`, `shadows`, `typography`) được quản lý tập trung tại thư viện **`packages/intrustdss-ui`** (`@intrustdss/ui`).
+- **Quy tắc cho các nhóm phát triển Mini App:**
+  1. Tuyệt đối không tự viết StyleSheet riêng cho các nút bấm (`AppButton`), khung chứa (`AppCard`), ô nhập liệu (`AppTextInput`).
+  2. Không hardcode mã màu HEX trực tiếp trong component; luôn sử dụng bảng màu và tokens từ `@intrustdss/ui`.
+  3. Khi cần bổ sung component giao diện dùng chung mới, phải gửi đề xuất cập nhật vào `@intrustdss/ui` (Platform Team xét duyệt) thay vì tự code cục bộ trong Mini App.
+
 ---
+
 
 ## 7. Tham Chiếu Hệ Thống Liên Quan (External References)
 
