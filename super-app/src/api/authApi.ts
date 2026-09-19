@@ -1,4 +1,4 @@
-import { LoginCredentials, LoginResult } from '../types/auth';
+import { LoginCredentials, LoginResult, UserInfo } from '../types/auth';
 
 /**
  * Gọi API Đăng nhập inTrace Gateway
@@ -38,11 +38,26 @@ export async function loginUser(
         resJson.data?.token ||
         'intrace_access_token_active';
 
-      const user = resJson.data?.user || {
-        name: resJson.data?.name || credentials.username,
-        tax_code: credentials.taxCode,
-        username: credentials.username,
-        companyName: resJson.data?.company_name || 'Doanh nghiệp inTrace',
+      const resolvedTaxCode =
+        resJson.data?.account?.tax_code ||
+        resJson.data?.tax_code ||
+        resJson.data?.user?.tax_code ||
+        credentials.taxCode.trim();
+
+      const resolvedAccountId =
+        resJson.data?.account?.id ? String(resJson.data.account.id) :
+        resJson.data?.default_account?.id ? String(resJson.data.default_account.id) :
+        resJson.data?.user?.default_account_id ? String(resJson.data.user.default_account_id) :
+        undefined;
+
+      const user: UserInfo = {
+        ...(resJson.data?.user || {}),
+        id: resolvedAccountId || (resJson.data?.user?.id ? String(resJson.data.user.id) : undefined),
+        name: resJson.data?.user?.name || resJson.data?.name || credentials.username,
+        tax_code: resolvedTaxCode,
+        accountId: resolvedAccountId,
+        username: resJson.data?.user?.username || resJson.data?.username || credentials.username,
+        companyName: resJson.data?.account?.name || resJson.data?.company_name || 'Doanh nghiệp inTrace',
       };
 
       return {

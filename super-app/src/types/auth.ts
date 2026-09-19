@@ -2,6 +2,7 @@ export interface UserInfo {
   id?: string;
   name: string;
   tax_code?: string;
+  accountId?: string;
   username: string;
   companyName?: string;
   roles?: string[];

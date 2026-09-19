@@ -10,6 +10,11 @@ export interface Container {
   status: ContainerStatus;
   cartonCount: number; // Số lượng thùng đã xếp vào
   maxCartons?: number; // Sức chứa tối đa (nếu có)
+  lotCode?: string; // Mã lô (vd: LOT-AAA-170926-C26AA0001476)
+  productQuantity?: number; // Tổng SL sản phẩm trong lô
+  farmerQuantity?: number; // SL nông hộ
+  productName?: string; // Tên sản phẩm
+  testingResult?: any; // Kết quả kiểm nghiệm
   departureDate?: string; // Ngày dự kiến xuất
   note?: string;
   createdBy?: string;

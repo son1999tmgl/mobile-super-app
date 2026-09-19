@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Expo: Debug (Attach)",
+            "type": "expo",
+            "request": "attach"
+        },
+        {
+            "name": "Expo: Start & Debug",
+            "type": "expo",
+            "request": "launch",
+            //   "projectRoot": "${workspaceFolder}/super-app"
+        }
+    ]
+}

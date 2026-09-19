@@ -184,3 +184,12 @@ Mỗi dự án (`super-app` và từng mini-app trong `packages/`) sở hữu b�
 - `.eslintrc.js`: Bộ quy tắc kiểm tra cú pháp và chất lượng mã nguồn riêng cho từng team.
 - `.prettierrc`: Định dạng code thống nhất (tab, dấu nháy, độ rộng dòng).
 
+---
+
+## 7. Tham Chiếu Hệ Thống Liên Quan (External References)
+
+- **Mã nguồn Web Frontend (inTrace Web):** `D:\Source\intrace\frontend-dev`
+  - Dự án Angular nguồn của cổng thông tin web inTrace (`trace.intrustdss.xyz` / `tracev2.intrustdss.vn`).
+  - Khi cần đối chiếu logic nghiệp vụ, danh mục sản phẩm cấu hình (`product-category-configs`), API đóng thùng/đóng công, luôn tra cứu mã nguồn web tại thư mục này.
+
+

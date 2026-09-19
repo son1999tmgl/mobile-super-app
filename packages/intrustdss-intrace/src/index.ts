@@ -15,3 +15,4 @@ export { inTraceDevConfig } from './config/env.dev';
 export { inTraceUatConfig } from './config/env.uat';
 export { inTraceProdConfig } from './config/env.prod';
 export { InTraceStorageService } from './services/intraceStorage';
+export { HttpFilterBuilder } from './utils/httpFilterBuilder';

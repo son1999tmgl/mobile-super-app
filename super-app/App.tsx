@@ -1,9 +1,13 @@
+if (__DEV__) {
+  require('./src/config/ReactotronConfig');
+}
+
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { HostErrorBoundary } from './src/components/HostErrorBoundary';
-import { LoginScreen } from './src/screens/LoginScreen';
+import { LoginScreen } from './src/screens/Login/LoginScreen';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { ACTIVE_APP_CONFIG } from './src/config/env';
 import { useAuthSession } from './src/hooks/useAuthSession';
@@ -16,7 +20,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <HostErrorBoundary>
-        <StatusBar style="light" translucent backgroundColor="transparent" />
+        <StatusBar style="light" />
 
         {isLoading ? (
           <View style={styles.loadingContainer}>

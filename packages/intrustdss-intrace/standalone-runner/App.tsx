@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Alert } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { InTraceNavigator, AppEnvironment, getInTraceConfig } from '../src';
 
-export default function StandaloneRunnerApp() {
-  // Đọc môi trường từ cấu hình hệ thống
+function RunnerContent() {
+  const insets = useSafeAreaInsets();
   const activeEnv: AppEnvironment = (
     process.env.APP_ENV ||
     process.env.EXPO_PUBLIC_APP_ENV ||
@@ -36,7 +37,7 @@ export default function StandaloneRunnerApp() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={[styles.safeArea, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
       <StatusBar style="light" />
 
       {/* Simulator Control Bar */}
@@ -67,7 +68,15 @@ export default function StandaloneRunnerApp() {
           onSessionExpired={handleSessionExpired}
         />
       </NavigationContainer>
-    </SafeAreaView>
+    </View>
+  );
+}
+
+export default function StandaloneRunnerApp() {
+  return (
+    <SafeAreaProvider>
+      <RunnerContent />
+    </SafeAreaProvider>
   );
 }
 

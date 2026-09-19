@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { AppEnvironment } from '../config/env';
+import { AppEnvironment, ACTIVE_APP_CONFIG } from '../config/env';
 import { UserInfo } from '../types/auth';
 import { COLORS } from '../constants/theme';
 
@@ -27,10 +27,13 @@ export const MiniAppHostScreen: React.FC<MiniAppHostScreenProps> = ({
   onExitToHost,
   onSessionExpired,
 }) => {
+  const miniAppConfig = ACTIVE_APP_CONFIG.miniApps[appId];
   const commonProps = {
     token,
     userInfo,
     environment,
+    apiBaseUrl: miniAppConfig?.apiBaseUrl,
+    apiKey: miniAppConfig?.apiKey,
     onExit: onExitToHost,
     onSessionExpired: () => {
       Alert.alert(

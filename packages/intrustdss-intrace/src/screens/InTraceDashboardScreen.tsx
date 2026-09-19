@@ -12,6 +12,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { InTraceStackParamList } from '../navigation/types';
 import { InTraceProps } from '../types';
 import { InTraceStorageService } from '../services/intraceStorage';
+import { ProductCategory } from '../types/product';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getInTraceConfig } from '../config/env';
 import { NativeBarcodeScanner } from '../components/NativeBarcodeScanner';
@@ -27,10 +28,12 @@ export const InTraceDashboardScreen: React.FC<Props> = ({
   token,
   userInfo,
   environment,
+  apiBaseUrl,
   onExit,
 }) => {
   const insets = useSafeAreaInsets();
   const config = getInTraceConfig(environment);
+  const [selectedProduct, setSelectedProduct] = useState<ProductCategory | null>(null);
   const [cartonCount, setCartonCount] = useState<number>(0);
   const [containerCount, setContainerCount] = useState<number>(0);
   const [unassignedCartonCount, setUnassignedCartonCount] = useState<number>(0);
@@ -39,10 +42,26 @@ export const InTraceDashboardScreen: React.FC<Props> = ({
 
   const loadMetrics = async () => {
     try {
-      InTraceStorageService.setAuth(token, environment);
-      const cartons = await InTraceStorageService.getCartons();
-      const containers = await InTraceStorageService.getContainers();
-      const unassigned = await InTraceStorageService.getUnassignedCartons();
+      InTraceStorageService.setAuth(
+        token,
+        environment,
+        apiBaseUrl,
+        userInfo?.tax_code,
+        userInfo?.accountId || userInfo?.id
+      );
+      const product = await InTraceStorageService.getSelectedProduct();
+      if (!product) {
+        // Chưa chọn sản phẩm -> chuyển hướng sang chọn sản phẩm
+        navigation.replace('ProductSelect');
+        return;
+      }
+      setSelectedProduct(product);
+
+      const configId = product.config_id || product.id;
+      const categoryId = product.product_category_id || product.id;
+      const cartons = await InTraceStorageService.getCartons(categoryId, configId);
+      const containers = await InTraceStorageService.getContainers(configId);
+      const unassigned = await InTraceStorageService.getUnassignedCartons(categoryId, configId);
       setCartonCount(cartons.length);
       setContainerCount(containers.length);
       setUnassignedCartonCount(unassigned.length);
@@ -128,6 +147,33 @@ export const InTraceDashboardScreen: React.FC<Props> = ({
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
+        {/* Card Sản phẩm đang chọn */}
+        <View style={styles.selectedProductCard}>
+          <View style={styles.productBadgeRow}>
+            <View style={styles.productBadge}>
+              <Text style={styles.productBadgeText}>Sản phẩm đang chọn</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.changeProductBtn}
+              onPress={() => navigation.navigate('ProductSelect')}
+            >
+              <Text style={styles.changeProductBtnText}>Đổi sản phẩm ⇄</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.productMainRow}>
+            <Text style={styles.productIconEmoji}>🏷️</Text>
+            <View style={styles.productTextCol}>
+              <Text style={styles.selectedProductName} numberOfLines={1}>
+                {selectedProduct?.name || 'Chưa chọn sản phẩm'}
+              </Text>
+              <Text style={styles.selectedProductMeta}>
+                Mã GTIN / Barcode: {selectedProduct?.gtin || selectedProduct?.code || 'N/A'}
+              </Text>
+            </View>
+          </View>
+        </View>
+
         {/* Banner quét nhanh */}
         <TouchableOpacity style={styles.scanBanner} onPress={() => setScannerVisible(true)}>
           <View style={styles.scanBannerIcon}>
@@ -406,5 +452,69 @@ const styles = StyleSheet.create({
     color: '#0369A1',
     marginTop: 2,
     fontFamily: 'monospace',
+  },
+  selectedProductCard: {
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#BAE6FD',
+    backgroundColor: '#F0F9FF',
+    shadowColor: '#0284C7',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  productBadgeRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  productBadge: {
+    backgroundColor: '#0284C7',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+  },
+  productBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  changeProductBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    backgroundColor: '#E0F2FE',
+    borderWidth: 1,
+    borderColor: '#7DD3FC',
+  },
+  changeProductBtnText: {
+    color: '#0369A1',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  productMainRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  productIconEmoji: {
+    fontSize: 24,
+    marginRight: 10,
+  },
+  productTextCol: {
+    flex: 1,
+  },
+  selectedProductName: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#0C4A6E',
+  },
+  selectedProductMeta: {
+    fontSize: 12,
+    color: '#0284C7',
+    marginTop: 2,
   },
 });

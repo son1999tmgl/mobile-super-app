@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component, ReactNode, ErrorInfo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
   onExit?: () => void;
 }
 
@@ -11,20 +11,21 @@ interface State {
   error: Error | null;
 }
 
-export class InTraceErrorBoundary extends React.Component<Props, State> {
+export class InTraceErrorBoundary extends Component<Props, State> {
+  public state: State = {
+    hasError: false,
+    error: null,
+  };
+
   constructor(props: Props) {
     super(props);
-    this.state = {
-      hasError: false,
-      error: null,
-    };
   }
 
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('[inTrace MiniApp Error]:', error, errorInfo);
   }
 

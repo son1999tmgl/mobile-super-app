@@ -12,6 +12,7 @@ import {
 import { StackNavigationProp } from '@react-navigation/stack';
 import { InTraceStackParamList } from '../navigation/types';
 import { Carton } from '../types/carton';
+import { ProductCategory } from '../types/product';
 import { InTraceStorageService } from '../services/intraceStorage';
 import { NativeBarcodeScanner } from '../components/NativeBarcodeScanner';
 
@@ -22,6 +23,7 @@ interface Props {
 }
 
 export const CartonListScreen: React.FC<Props> = ({ navigation }) => {
+  const [selectedProduct, setSelectedProduct] = useState<ProductCategory | null>(null);
   const [cartons, setCartons] = useState<Carton[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -30,7 +32,12 @@ export const CartonListScreen: React.FC<Props> = ({ navigation }) => {
   const fetchCartons = async () => {
     try {
       setLoading(true);
-      const data = await InTraceStorageService.getCartons();
+      const selected = await InTraceStorageService.getSelectedProduct();
+      setSelectedProduct(selected);
+      const data = await InTraceStorageService.getCartons(
+        selected?.product_category_id,
+        selected?.config_id || selected?.id
+      );
       setCartons(data);
     } catch (error) {
       Alert.alert('Lỗi', 'Không thể tải danh sách thùng hàng');
@@ -154,6 +161,21 @@ export const CartonListScreen: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.scanBtnText}>📷 Quét</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Product Banner Filter */}
+      {selectedProduct ? (
+        <View style={styles.productBanner}>
+          <Text style={styles.productBannerText} numberOfLines={1}>
+            Sản phẩm: <Text style={styles.productBannerName}>{selectedProduct.name}</Text>
+          </Text>
+          <TouchableOpacity
+            style={styles.productChangeBtn}
+            onPress={() => navigation.navigate('ProductSelect')}
+          >
+            <Text style={styles.productChangeText}>Đổi ⇄</Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
 
       {/* List content */}
       {loading ? (
@@ -375,6 +397,40 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: '#FFFFFF',
     fontSize: 15,
+    fontWeight: '700',
+  },
+  productBanner: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#E0F2FE',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#BAE6FD',
+  },
+  productBannerText: {
+    flex: 1,
+    fontSize: 13,
+    color: '#0369A1',
+    fontWeight: '500',
+    marginRight: 8,
+  },
+  productBannerName: {
+    fontWeight: '700',
+    color: '#0C4A6E',
+  },
+  productChangeBtn: {
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#7DD3FC',
+  },
+  productChangeText: {
+    color: '#0284C7',
+    fontSize: 12,
     fontWeight: '700',
   },
 });

@@ -30,7 +30,8 @@ export const ContainerListScreen: React.FC<Props> = ({ navigation }) => {
   const fetchContainers = async () => {
     try {
       setLoading(true);
-      const data = await InTraceStorageService.getContainers();
+      const selected = await InTraceStorageService.getSelectedProduct();
+      const data = await InTraceStorageService.getContainers(selected?.config_id || selected?.id);
       setContainers(data);
     } catch (error) {
       Alert.alert('Lỗi', 'Không thể tải danh sách Container');

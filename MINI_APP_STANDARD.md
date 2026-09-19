@@ -39,6 +39,18 @@ Mỗi repository của mini-app phải tuân thủ cấu trúc sau:
 
 > **Lưu ý nguyên tắc tách biệt độc lập:** Vì mỗi mini-app là một repository độc lập giao cho một đội ngũ phát triển riêng, toàn bộ file cấu hình (`tsconfig.json`, `.eslintrc.js`, `.prettierrc`) và các tầng mã nguồn (`services`, `hooks`, `types`, `constants`, `utils`) PHẢI được thiết lập khép kín bên trong từng repository của mini app, tuyệt đối không phụ thuộc vào cấu hình ở thư mục cha hay App tổng.
 
+### 1.1. Quy chuẩn Thiết kế Màn hình (Screen Folder Pattern)
+> [!IMPORTANT]
+> **QUY TẮC CẤM "GOD COMPONENT":** Tuyệt đối không gom chung State, Logic API, Quét mã, Giao diện JSX và StyleSheet vào chung 1 file duy nhất. Mọi màn hình chức năng phải được tổ chức thành thư mục khép kín:
+> ```
+> screens/[ScreenName]/
+> ├── [ScreenName]Screen.tsx    # Chỉ chứa UI JSX layout (dưới 100 dòng)
+> ├── use[ScreenName].ts        # Custom Hook quản lý State, Validation, Scanner, API
+> ├── [ScreenName].styles.ts    # Tách riêng toàn bộ StyleSheet.create
+> └── components/               # Các mảnh giao diện con đặc thù của màn hình
+> ```
+> - **Lợi ích:** Tránh Git Conflict khi làm việc nhóm, cho phép viết Unit Test độc lập cho tầng Logic, dễ dàng bảo trì và tối ưu hiệu năng render.
+
 ---
 
 ## 2. Quy tắc Export & Giao tiếp với App Tổng (Contract)
