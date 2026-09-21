@@ -125,3 +125,77 @@ npm run update:uat
 # Đẩy cập nhật lên kênh production chính thức (nạp env.prod.ts)
 npm run update:prod
 ```
+
+---
+
+## 📦 7. Xuất File Cài Đặt Trực Tiếp (.APK) & Đóng Gói Lên Store
+
+### 7.1. Các lệnh Build theo từng môi trường
+Chạy tại thư mục `d:\mobile app\super-app`:
+
+```bash
+# 1. Xuất file APK môi trường DEV (Cài trực tiếp lên điện thoại Android để test)
+npx eas-cli build -p android --profile preview-dev-apk
+
+# 2. Xuất file APK môi trường UAT (Gửi file APK cho Tester/Khách hàng kiểm thử)
+npx eas-cli build -p android --profile preview-uat
+
+# 3. Đóng gói bản Production chính thức (.AAB để nộp lên Google Play Store)
+npx eas-cli build -p android --profile production
+
+# 4. Đóng gói bản iOS (.IPA gửi lên Apple TestFlight / App Store)
+npx eas-cli build -p ios --profile preview-uat
+```
+
+---
+
+### 7.2. Giải thích chi tiết các câu hỏi khi Build lần đầu (Chọn Y hay N?)
+
+Khi lần đầu chạy lệnh build, EAS CLI sẽ đưa ra 2 câu hỏi cấu hình:
+
+1. **Câu hỏi 1:** `Would you like to automatically create an EAS project for @sonnxtmgl/intrustdss-super-app?`
+   * 👉 **Hành động: Chọn `Y` (Yes) rồi nhấn Enter.**
+   * **Bản chất:** EAS cần liên kết mã nguồn ở máy bạn với tài khoản Expo Cloud (`@sonnxtmgl`). Khi chọn `Y`:
+     * EAS sẽ tự động tạo một dự án mới tên `intrustdss-super-app` trên dashboard https://expo.dev.
+     * EAS tự động sinh một mã định danh dự án `projectId` (chuỗi UUID) và ghi vào file `app.json`.
+   * *Nếu chọn `N`: Quá trình build sẽ bị hủy vì không xác định được dự án trên Cloud.*
+
+2. **Câu hỏi 2:** `Generate a new Android Keystore?`
+   * 👉 **Hành động: Chọn `Y` (Generate a new keystore) rồi nhấn Enter.**
+   * **Bản chất:** Hệ điều hành Android bắt buộc mọi file `.apk` phải được ký bằng một chứng chỉ số (Keystore) thì mới cài đặt được.
+   * Khi chọn `Y`, hệ thống EAS Cloud sẽ tự động sinh Keystore và bảo mật trên máy chủ Expo. Bạn không cần phải dùng công cụ dòng lệnh `keytool` của Java để tạo thủ công hay lo sợ bị mất khóa ký.
+
+---
+
+### 7.3. Khi các dự án con (Mini App) thay đổi thì sao? Làm sao để tự động cập nhật?
+
+Đây là cơ chế cốt lõi của kiến trúc **Super App / Mini App kết hợp Expo OTA (Over-The-Air Update)**:
+
+#### 1. Bản chất kiến trúc đóng gói:
+* Toàn bộ mã nguồn của các Mini App (như `packages/intrustdss-intrace`) hiện đang được liên kết trực tiếp vào `super-app`.
+* Khi bạn chạy `eas build`, file APK được sinh ra sẽ chứa:
+  * **Native Runtime**: Khung chạy Android (Camera, bộ biên dịch Hermes, mã C++/Java).
+  * **JavaScript Bundle**: Toàn bộ logic, màn hình, mã TypeScript của cả Super App và các Mini App con.
+
+#### 2. Khi dự án con (Mini App) thay đổi code, cập nhật như thế nào?
+Bạn **KHÔNG CẦN** phải xuất lại file APK mỗi lần sửa lỗi hay thêm tính năng cho Mini App! Hãy phân biệt 2 trường hợp:
+
+| Trường hợp thay đổi | Cách cập nhật | Người dùng nhận thế nào? |
+| :--- | :--- | :--- |
+| **Sửa logic JS/TS, thêm màn hình, sửa API, đổi giao diện Mini App** *(95% công việc hàng ngày)* | **Chạy OTA Update (EAS Update):**<br>`npx eas-cli update --branch preview-dev --message "Cap nhat intrace v1.1"` | 🚀 **Tự động 100%:** Khi người dùng mở Super App trên điện thoại, ứng dụng sẽ tự động tải đoạn code mới về trong vài giây. Giao diện Mini App đổi mới ngay lập tức mà **không cần cài lại file APK**! |
+| **Cài thêm thư viện Native mới** *(VD: cài thêm thư viện Bluetooth Native, nâng cấp phiên bản Expo SDK)* | **Build lại file APK:**<br>`npx eas-cli build -p android --profile preview-dev-apk` | 📥 Người dùng tải file `.apk` mới về và cài đặt đè lên ứng dụng cũ. |
+
+#### 3. Câu lệnh đẩy cập nhật tự động (OTA) cho Mini App:
+Đứng tại thư mục `d:\mobile app\super-app`:
+```bash
+# Đẩy cập nhật tức thì cho môi trường Dev (Tester thấy ngay)
+npx eas-cli update --branch preview-dev --message "Update mini-app intrace: them tinh nang quet ma pallet"
+
+# Đẩy cập nhật tức thì cho môi trường UAT
+npx eas-cli update --branch preview-uat --message "UAT: Fix barcode scanner inTrace"
+
+# Đẩy cập nhật tức thì cho Production (Toàn bộ người dùng nhận ngay)
+npx eas-cli update --branch production --message "Release inTrace v1.0.1"
+```
+*(Ghi chú: Lệnh này chỉ mất khoảng 30 giây để hoàn thành vì chỉ đóng gói mã JS/TS, không cần biên dịch lại mã nguồn Java/C++)*.
+

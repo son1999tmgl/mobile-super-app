@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "expo start",
-    "start:dev": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=dev\\nEXPO_PUBLIC_APP_ENV=dev\\n')\" && expo start",
-    "start:uat": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=uat\\nEXPO_PUBLIC_APP_ENV=uat\\n')\" && expo start",
-    "start:prod": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=prod\\nEXPO_PUBLIC_APP_ENV=prod\\n')\" && expo start",
+    "start": "expo start -c",
+    "start:dev": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=dev\\nEXPO_PUBLIC_APP_ENV=dev\\n')\" && expo start -c",
+    "start:uat": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=uat\\nEXPO_PUBLIC_APP_ENV=uat\\n')\" && expo start -c",
+    "start:prod": "node -e \"require('fs').writeFileSync('.env', 'APP_ENV=prod\\nEXPO_PUBLIC_APP_ENV=prod\\n')\" && expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios"
   },

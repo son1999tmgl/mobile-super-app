@@ -12,11 +12,13 @@ import { RootNavigator } from './src/navigation/RootNavigator';
 import { ACTIVE_APP_CONFIG } from './src/config/env';
 import { useAuthSession } from './src/hooks/useAuthSession';
 import { COLORS } from './src/constants/theme';
+import { LogBox } from 'react-native';
 
 export default function App() {
+  // Bỏ qua cảnh báo InteractionManager từ thư viện navigation
+  LogBox.ignoreLogs(['InteractionManager has been deprecated']);
   const appConfig = ACTIVE_APP_CONFIG;
   const { token, user, isAuthenticated, isLoading, login, logout } = useAuthSession();
-
   return (
     <SafeAreaProvider>
       <HostErrorBoundary>

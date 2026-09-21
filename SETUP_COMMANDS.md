@@ -155,3 +155,22 @@ eas update --branch preview-uat --message "UAT: inTrace fix barcode scanner"
 eas update --branch production --message "Prod: Release inTrace v1.0.1"
 ```
 Người dùng mở ứng dụng trên điện thoại sẽ tự động nhận được giao diện mới trong vài giây mà không cần lên App Store / CH Play!
+
+---
+
+### Bước 3.4: Lệnh Build xuất file cài đặt (.APK) và Store (.AAB / .IPA)
+
+```bash
+# 1. Xuất file APK môi trường DEV cài trực tiếp vào điện thoại Android
+npx eas-cli build -p android --profile preview-dev-apk
+
+# 2. Xuất file APK môi trường UAT gửi cho khách hàng/tester
+npx eas-cli build -p android --profile preview-uat
+
+# 3. Đóng gói bản Production chính thức (.AAB để nộp lên Google Play Store)
+npx eas-cli build -p android --profile production
+
+# 4. Đóng gói bản iOS (.IPA gửi lên Apple TestFlight)
+npx eas-cli build -p ios --profile preview-uat
+```
+*(Lưu ý: Khi chạy lần đầu, nếu hệ thống hỏi `create an EAS project?` hoặc `Generate a new Android Keystore?`, bạn chỉ cần gõ `Y` và nhấn Enter)*.

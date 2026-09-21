@@ -83,7 +83,7 @@ export const SuperAppHomeScreen: React.FC<Props> = ({
         </View>
 
         <TouchableOpacity style={styles.logoutBtn} onPress={onLogout} activeOpacity={0.7}>
-          <Text style={styles.logoutText}>Đăng xuất ⎋</Text>
+          <Text style={styles.logoutText}>Đăng xuất</Text>
         </TouchableOpacity>
       </View>
 
@@ -96,13 +96,10 @@ export const SuperAppHomeScreen: React.FC<Props> = ({
             </Text>
           </View>
           <View style={styles.userInfo}>
-            <Text style={styles.userName}>{userInfo?.name || 'Cán bộ Vận hành'}</Text>
+            <Text style={styles.userName}>{userInfo?.name || ''}</Text>
             <Text style={styles.userCompany}>
               {userInfo?.companyName || (userInfo?.tax_code ? `MST: ${userInfo.tax_code}` : 'Công ty CP intrustDSS')}
             </Text>
-            <View style={styles.authBadge}>
-              <Text style={styles.authBadgeText}>🟢 Đã xác thực inTrace</Text>
-            </View>
           </View>
         </View>
 
@@ -232,21 +229,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#64748B',
     marginTop: 2,
-  },
-  authBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#F0FDF4',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 6,
-    marginTop: 6,
-    borderWidth: 1,
-    borderColor: '#BBF7D0',
-  },
-  authBadgeText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#166534',
   },
   sectionHeading: {
     fontSize: 17,

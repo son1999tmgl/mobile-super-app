@@ -23,7 +23,9 @@
       "package": "vn.intrustdss.superapp",
       "permissions": [
         "CAMERA",
-        "CAMERA_FLASH"
+        "CAMERA_FLASH",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ]
     },
     "plugins": [
@@ -35,6 +37,11 @@
       ],
       "expo-asset",
       "expo-secure-store"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "82663d3b-b30c-4994-b3d9-f12b32accee9"
+      }
+    }
   }
 }
